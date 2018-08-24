@@ -1,4 +1,4 @@
-var selectText = function (body, iframeCssSelector, text, prefix, suffix) {
+var selectText = function (iframeCssSelector, text, prefix, suffix) {
     prefix = prefix || "";
     suffix = suffix || "";
 
@@ -32,7 +32,8 @@ var selectText = function (body, iframeCssSelector, text, prefix, suffix) {
             offset: totalLength
         };
     };
-    var contentWindow = window.parent.document.querySelector(iframeCssSelector).contentWindow;
+    var contentWindow = iframeCssSelector ? window.parent.document.querySelector(iframeCssSelector).contentWindow : window;
+    var body = contentWindow.document.body;
     triggerMouseEvent(contentWindow.document, 'mousedown');
     var selection = contentWindow.getSelection();
     var range = contentWindow.document.createRange();
