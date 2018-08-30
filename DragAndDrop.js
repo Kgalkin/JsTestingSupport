@@ -6,12 +6,6 @@ function dnd(elemDrag, elemDrop) {
         return false;
     }
 
-    var startingDropRect = elemDrag.getBoundingClientRect();
-
-    function rectsEqual(r1, r2) {
-        return r1.top === r2.top && r1.right === r2.right && r1.bottom === r2.bottom && r1.left === r2.left;
-    }
-
     function fireMouseEvent(type, elem, dataTransfer) {
         var evt = document.createEvent('MouseEvents');
         evt.initMouseEvent(type, true, true, window, 1, 1, 1, 0, 0, false, false, false, false, 0, elem);
