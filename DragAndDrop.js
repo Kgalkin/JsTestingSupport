@@ -1,6 +1,5 @@
 function dnd(elemDrag, elemDrop) {
     var DELAY_INTERVAL_MS = 100;
-    var MAX_TRIES = 10;
     var dragStartEvent;
     if (!elemDrag || !elemDrop) {
         return false;
