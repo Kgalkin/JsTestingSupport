@@ -24,6 +24,7 @@ var scrollToCenterOfScrollableParent = function scroll(elementToScroll) {
                 break;
             } else {
                 element = findIframeOfBody(element.ownerDocument.body);
+                if (!element) return;
                 offset += element.offsetTop;
             }
         } else {
