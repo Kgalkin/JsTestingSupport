@@ -21,12 +21,12 @@ var selectText = function (iframeCssSelector, text, prefix, suffix) {
         node.dispatchEvent(new Event(eventType));
     }
 
-    var findTargetNode = function (node, offset, isStart) {
+    var findTargetNode = function (node, offset) {
         var totalLength = 0;
         for (var i = 0; i < node.childNodes.length; i++) {
             if (node.childNodes[i].nodeType !== 8) {
                 if (node.childNodes[i].childNodes.length !== 0) {
-                    var subNodeSearch = findTargetNode(node.childNodes[i], offset - totalLength, isStart);
+                    var subNodeSearch = findTargetNode(node.childNodes[i], offset - totalLength);
                     if (subNodeSearch.target == null) {
                         totalLength += subNodeSearch.offset;
                     } else {
@@ -36,7 +36,7 @@ var selectText = function (iframeCssSelector, text, prefix, suffix) {
                 if (totalLength + countNodeLength(node.childNodes[i]) >= offset) {
                     return {
                         target: node.childNodes[i],
-                        offset: findCorrectLength(node.childNodes[i].textContent, offset, isStart) - totalLength
+                        offset: findCorrectLength(node.childNodes[i].textContent, offset - totalLength)
                     };
                 }
                 totalLength += countNodeLength(node.childNodes[i]);
@@ -53,11 +53,10 @@ var selectText = function (iframeCssSelector, text, prefix, suffix) {
     var selection = contentWindow.getSelection();
     selection.removeAllRanges();
     var range = contentWindow.document.createRange();
-    var startOf = body.textContent.replace(spacesTabsNewLines, "").search((prefix + text + suffix).replace(spacesTabsNewLines, "").replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) + prefix.length;
-    var startTarget = findTargetNode(body, startOf+1);
-     var endTarget = findTargetNode(body, startOf + text.replace(spacesTabsNewLines, "").length);
-    range.setStart(startTarget.target, startTarget.offset-1);
+    var startOf = body.textContent.replace(spacesTabsNewLines, "").search((prefix + text + suffix).replace(spacesTabsNewLines, "")) + prefix.replace(spacesTabsNewLines, "").length;
+    var startTarget = findTargetNode(body, startOf + 1);
+    var endTarget = findTargetNode(body, startOf + text.replace(spacesTabsNewLines, "").length);
+    range.setStart(startTarget.target, startTarget.offset - 1);
     range.setEnd(endTarget.target, endTarget.offset);
     selection.addRange(range);
     triggerMouseEvent(contentWindow.document, 'mouseup');
-};
