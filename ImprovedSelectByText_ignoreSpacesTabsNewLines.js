@@ -62,3 +62,4 @@ var selectText = function (iframeCssSelector, text, prefix, suffix) {
     range.setEnd(endTarget.target, endTarget.offset);
     selection.addRange(range);
     triggerMouseEvent(contentWindow.document, 'mouseup');
+}
