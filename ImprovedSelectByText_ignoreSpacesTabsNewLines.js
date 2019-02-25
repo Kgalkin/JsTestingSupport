@@ -53,7 +53,9 @@ var selectText = function (iframeCssSelector, text, prefix, suffix) {
     var selection = contentWindow.getSelection();
     selection.removeAllRanges();
     var range = contentWindow.document.createRange();
-    var startOf = body.textContent.replace(spacesTabsNewLines, "").search((prefix + text + suffix).replace(spacesTabsNewLines, "")) + prefix.replace(spacesTabsNewLines, "").length;
+    var startOf = body.textContent.replace(spacesTabsNewLines, "").search((prefix + text + suffix).replace(spacesTabsNewLines, ""));
+    if (startOf < 0) throw "Can not find text:\"" + prefix + text + suffix + "\" in iframe";
+    startOf += prefix.replace(spacesTabsNewLines, "").length;
     var startTarget = findTargetNode(body, startOf + 1);
     var endTarget = findTargetNode(body, startOf + text.replace(spacesTabsNewLines, "").length);
     range.setStart(startTarget.target, startTarget.offset - 1);
